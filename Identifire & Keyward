@@ -1,0 +1,24 @@
+/*** Definition Section ***/
+%{
+int valid=0; int a = 0; int b = 0;
+%}
+
+/*** Rule Section ***/
+%%
+^if|else|for|while|do|switch|int|char|float|double$ a++;  printf ("KEYWORD \n");
+
+^[a-z A-Z _][a-z A-Z _ 0-9]*$ valid++; printf("Valid Identifier");
+
+^[/]{1}[/]{1}[a-zA-Z0-9]* b++; printf("Valid Comment");
+^[/]{1}[*]+{1}[a-zA-Z0-9]*[*]{1}[/]{1} b++; printf("Valid Comment");
+^[/]+[a-zA-z]*[0-9]*[/]+ b++; printf("Valid Comment");
+\n {return 0;}
+%%
+
+/*** Code Section ***/
+int yywrap(){}
+int main(){
+yylex();
+if(valid == 0 && a ==0 && b==0)  printf("Invalid");
+return 0;
+}
